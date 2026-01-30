@@ -3,396 +3,414 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Bitcoin Cycle | Análisis Temporal</title>
+    <title>Bitcoin Cíclico | El Informe Definitivo 2025-2027</title>
+    <meta name="description" content="Análisis cuantitativo: De los $122k al letargo de 2027.">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-color: #050505;
-            --card-bg: #0f0f0f;
+            --bg-body: #050505;
+            --bg-card: #111111;
+            --bg-paper: #161616;
             --text-main: #e0e0e0;
             --text-muted: #888888;
-            --accent: #d4af37; /* Oro */
-            --accent-glow: rgba(212, 175, 55, 0.2);
-            --border: #222;
-            --font-serif: 'Playfair Display', serif;
-            --font-sans: 'Inter', sans-serif;
+            --accent: #F7931A; 
+            --accent-dim: #b86b13;
+            --border: #333333;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --spacing-unit: 1.5rem;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-body);
             color: var(--text-main);
-            font-family: var(--font-sans);
+            font-family: var(--font-body);
             line-height: 1.7;
-            font-size: 18px;
+            font-size: 17px;
             -webkit-font-smoothing: antialiased;
         }
 
         header {
-            padding: 3rem 1rem;
-            text-align: center;
             border-bottom: 1px solid var(--border);
+            padding: 2.5rem 0;
+            text-align: center;
             margin-bottom: 4rem;
         }
 
-        .brand {
-            font-family: var(--font-serif);
+        .logo {
+            font-family: var(--font-heading);
             font-size: 1.5rem;
-            letter-spacing: 2px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+            text-decoration: none;
             text-transform: uppercase;
-            color: var(--text-main);
-            opacity: 0.8;
         }
+        .logo span { color: var(--accent); }
 
-        .brand span { color: var(--accent); }
+        .container { max-width: 960px; margin: 0 auto; padding: 0 1.5rem; }
 
-        main {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 1.5rem 5rem;
-        }
+        article { background-color: transparent; }
 
-        article { animation: fadeIn 1s ease-out; }
-
-        h1 {
-            font-family: var(--font-serif);
-            font-size: 3.5rem;
-            line-height: 1.1;
+        .article-meta {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
             margin-bottom: 1.5rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #222;
+            padding-bottom: 1rem;
+        }
+
+        h1.article-title {
+            font-family: var(--font-heading);
+            font-size: 4rem;
+            line-height: 1.05;
+            margin-bottom: 3rem;
             color: #fff;
         }
-
-        .meta {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 3rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .meta-tag {
-            background: var(--accent);
-            color: #000;
-            padding: 2px 8px;
-            font-weight: 600;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-        }
-
-        p { margin-bottom: 1.8rem; color: #ccc; }
 
         h2 {
-            font-family: var(--font-serif);
+            font-family: var(--font-heading);
             font-size: 2rem;
-            margin-top: 3.5rem;
+            margin-top: 5rem;
             margin-bottom: 1.5rem;
             color: #fff;
-            border-left: 3px solid var(--accent);
-            padding-left: 1rem;
+        }
+        
+        h3 {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ccc;
         }
 
-        h3 {
-            font-size: 1.1rem;
-            color: var(--accent);
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+        p { margin-bottom: 1.5rem; color: #d1d1d1; }
+
+        .data-point {
+            color: #fff;
             font-weight: 600;
+            background: rgba(247, 147, 26, 0.1);
+            padding: 0 4px;
+            border-radius: 3px;
         }
 
         .highlight-box {
-            background: #111;
-            border: 1px solid #333;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: 4px;
-        }
-
-        blockquote {
-            font-family: var(--font-serif);
-            font-size: 1.4rem;
-            font-style: italic;
-            border-left: 1px solid var(--border);
-            padding-left: 2rem;
-            margin: 3rem 0;
-            color: #fff;
-        }
-
-        strong { color: #fff; font-weight: 600; }
-
-        .chart-container {
-            background: var(--card-bg);
+            background: var(--bg-paper);
             border: 1px solid var(--border);
-            padding: 1.5rem;
-            margin: 2.5rem 0;
+            padding: 2.5rem;
+            margin: 3rem 0;
             border-radius: 4px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        
+        .highlight-box::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent);
         }
 
-        .chart-caption {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-align: center;
-            margin-top: 1rem;
-            font-style: italic;
+        .highlight-box h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            color: var(--accent);
         }
+
+        .chart-wrapper { margin: 4rem 0; }
+        .chart-container {
+            width: 100%;
+            height: 500px;
+            background: var(--bg-paper);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+        canvas { width: 100%; height: 100%; display: block; }
+        
+        .chart-caption {
+            text-align: center;
+            color: #666;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            font-family: monospace;
+        }
+        
+        .chart-legend {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            justify-content: center;
+        }
+        .legend-item { display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
 
         footer {
+            margin-top: 8rem;
             border-top: 1px solid var(--border);
+            padding: 3rem 0;
             text-align: center;
-            padding: 3rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-top: 5rem;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
+        @media (max-width: 768px) {
+            h1.article-title { font-size: 2.5rem; }
+            .chart-container { height: 350px; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="brand">The <span>Voisi</span> Observer</div>
+        <div class="container">
+            <a href="#" class="logo">The <span>Bitcoin</span> Oracle</a>
+        </div>
     </header>
 
-    <main id="app"></main>
+    <main class="container">
+        <div id="blog-root"></div>
+    </main>
 
     <footer>
-        <p>© 2026 Voisi Observer.</p>
+        <div class="container">
+            <p>&copy; 2026 The Bitcoin Oracle. Análisis Cuantitativo Independiente.</p>
+        </div>
     </footer>
 
     <script>
         /**
-         * ==========================================
-         *  BASE DE DATOS DEL BLOG (JSON)
-         * ==========================================
+         * ====================================================================
+         * CONFIGURACIÓN DE DATOS (ARTÍCULO COMPLETO)
+         * ====================================================================
          */
-        const BLOG_DATABASE = {
-            articles: [
-                {
-                    id: 1,
-                    title: "El Fractal de los 45 Meses: La Guía Definitiva 2024-2030",
-                    date: "Jnauary 24, 2026",
-                    author: "El Observador, Adriana Alonso",
-                    tags: ["Bitcoin", "Análisis", "Ciclo"],
-                    contentHTML: `
-                        <p>Si no entiendes la historia, estás condenado a repetirla. Pero si entiendes los <strong>fractales temporales</strong>, puedes anticiparla. Hoy vamos a diseccionar la correlación exacta entre el ciclo de 2021 y el ciiclo de 2024, con una precisión de días y precios que no deja lugar a dudas.</p>
-                        
-                        <p>La premisa es simple pero poderosa: <strong>Febrero 2021 es Octubre 2024</strong>. Un desplazamiento de 45 meses. Vamos a recorrerlo paso a paso.</p>
+        const BLOG_DATA = [
+            {
+                id: 1,
+                date: "Enero 30, 2026",
+                readTime: "15 min lectura",
+                title: "El Gran Colapso: De los $122k al Invierno Eterno de 2027",
+                content: `
+                    <div class="article-meta">
+                        <span>${'DATE'}</span>
+                        <span>${'READ_TIME'}</span>
+                    </div>
+                    
+                    <p>Estamos a 30 de enero de 2026. El precio se desmorona hacia los <span class="data-point">$83,000</span> tras un intento fallido de repunte a $95k hace apenas dos semanas. La mayoría está confundida, preguntándose qué salió mal cuando "todo parecía subir".</p>
 
-                        <h2>1. El Impulso Inicial (41 Días)</h2>
-                        <p>Todo comienza con una subida agresiva.</p>
-                        <ul>
-                            <li><strong>2021:</strong> Del 1 al 20 de febrero, oscilamos entre \$35k y \$55k, para romper el 13 de marzo hasta los <strong>\$61k</strong>. Duración: 41 días.</li>
-                            <li><strong>2024:</strong> Del 12 de octubre al 23 de noviembre, pasamos de \$62k a <strong>\$98k</strong>. Duración: 41 días.</li>
-                        </ul>
+                    <p>La respuesta está en los datos. No en el sentimiento. He pasado los últimos meses compilando la estructura completa del mercado desde 2021, y el patrón es innegable. Les presento la evidencia.</p>
 
+                    <h2>Parte I: La Evidencia Histórica (2021 - 2024)</h2>
+                    <p>Para entender dónde estamos, debemos ver de dónde venimos. Existe una anomalía temporal en Bitcoin donde los ciclos se duplican en duración pero mantienen la forma.</p>
+
+                    <p>Fíjense en la gráfica inferior. En 2021, el mercado tocó techo en noviembre ($69k). Luego sufrió un colapso brutal hasta <span class="data-point">$16,000</span> en noviembre de 2022. Lo más importante no es la caída, sino lo que pasó después: la <strong>recuperación lenta</strong> de 2023. El precio intentó subir, se quedó atascado en $27k, y solo a finales de 2023 logró llegar a $43k. Fue un año doloroso, de "subir un paso y bajar dos".</p>
+
+                    <div class="chart-wrapper">
                         <div class="chart-container">
-                            <canvas id="chartImpulso"></canvas>
-                            <div class="chart-caption">Figura 1: La subida inicial de 41 días. La geometría es idéntica.</div>
+                            <canvas id="historyChart"></canvas>
                         </div>
+                        <div class="chart-caption">Fig 1. El mapa de 2021-2024. Note la recuperación lenta de 2023.</div>
+                    </div>
 
-                        <h2>2. La Consolidación (Fase Calma)</h2>
-                        <p>Tras el pico, el mercado "se muerde la cola". No cae, simplemente se mantiene.</p>
-                        <ul>
-                            <li><strong>2021:</strong> Del 13 de marzo al 8 de mayo (26 días). Bajó solo \$3k (de \$61k a \$58k).</li>
-                            <li><strong>2024:</strong> Del 23 de noviembre al 22 de febrero de 2025 (29 días). Bajó solo \$2k (de \$98k a \$96k).</li>
-                        </ul>
+                    <p>Este comportamiento de 2023 es la clave maestra para predecir 2027.</p>
 
-                        <h2>3. La Primera Bajada Importante (Ventana de 49 Días)</h2>
-                        <p>Aquí es donde el mercado pone nervioso a los débiles. Analicemos la estructura de la caída:</p>
-                        <ul>
-                            <li><strong>2022 (El Passado):</strong> Del 8 al 29 de mayo, cae de \$57k a \$34k (pierde \$23k en 21 días). Luego se arrastra hasta el 17 de julio hasta \$31k. <strong>Total: 49 días.</strong></li>
-                            <li><strong>2025 (El Futuro):</strong> Del 22 de febrero al 1 de marzo, cae de \$96k a \$86k. Luego, hasta el 12 de abril, llega a \$82k. <strong>Total: 49 días.</strong></li>
-                        </ul>
-                        
+                    <div class="highlight-box">
+                        <h2>La Tesis del Desplazamiento</h2>
+                        <p>Lo que pasó en 2022-2023 se está replicando ahora en 2025-2026, pero con más volatilidad. El ciclo se ha alargado. El pico de 2025 no fue un evento de un día, fue un baile de precios.</p>
+                    </div>
+
+                    <h2>Parte II: La Euforia y el Desplome (2025 - Principios 2026)</h2>
+                    <p>Veamos la segunda gráfica. En 2025 vivimos una euforia desconocida. El mercado no subió en línea recta. Hizo oscilaciones violentas:</p>
+                    <ul>
+                        <li>Llegamos a <span class="data-point">$108,000</span> en mayo.</li>
+                        <li>Subimos a <span class="data-point">$117,000</span> en julio.</li>
+                        <li>Y finalmente, el <strong>4 de octubre de 2025</strong>, alcanzamos el máximo absoluto de <span class="data-point">$122,000</span>.</li>
+                    </ul>
+                    <p>Después de ese pico, la rotura comenzó. A finales de octubre ya estábamos en $111k, y para noviembre el pánico nos llevó a <span class="data-point">$84,000</span>.</p>
+
+                    <p>Este mes de enero 2026 ha sido la prueba final. El mercado intentó repuntar a $95k el día 17, pero la liquidez no aguantó. Ahora, hoy 30 de enero, caemos de nuevo a <span class="data-point">$83,000</span>. El ciclo alcista ha muerto.</p>
+
+                    <div class="chart-wrapper">
                         <div class="chart-container">
-                            <canvas id="chartBajada"></canvas>
-                            <div class="chart-caption">Figura 2: La ventana de 49 días de corrección. Nota la diferencia en magnitud (\$23k vs \$10k).</div>
+                            <canvas id="futureChart"></canvas>
                         </div>
+                        <div class="chart-caption">Fig 2. Proyección actualizada: El colapso y el letargo de 2027.</div>
+                    </div>
 
-                        <h2>4. El Rebote de la Esperanza (La Trampa)</h2>
-                        <p>Esta es la fase donde creemos que el bear market terminó, pero no es así. Es una subida preparatoria.</p>
-                        <ul>
-                            <li><strong>2022:</strong> Del 17 de julio al 13 de noviembre, sube de \$31k a \$64k. La mayor parte de la subida fue de julio a agosto (+\$48k en 42 días).</li>
-                            <li><strong>2025:</strong> Del 12 de abril al 24 de mayo, sube de \$82k a \$108k. Luego, tras una pequeña corrección de mayo a agosto, la tercera subida nos lleva a <strong>\$122k el 4 de octubre</strong>.</li>
-                        </ul>
+                    <h2>Parte III: El Invierno de 2027</h2>
+                    <p>¿Qué viene ahora? Aquí es donde uso la analogía de 2023. En 2023, el mercado tardó un año entero en recuperarse. En 2027, pasará exactamente lo mismo.</p>
+                    
+                    <p>Mi predicción es clara:</p>
+                    <ol>
+                        <li><strong>2026:</strong> Veremos caídas graduales. Un falso repunte en abril a $91k, luego un desplome a $64k en julio. Para diciembre de 2026, tocaremos fondo alrededor de <span class="data-point">$50,000</span>.</li>
+                        <li><strong>2027:</strong> El año del letargo. No esperen rápidos beneficios. Bitcoin se moverá en un rango estrecho, oscilando lentamente entre $56k y $75k. Será idéntico al aburrimiento de 2023, pero con un suelo más alto debido a la adopción institucional.</li>
+                    </ol>
 
-                        <p>El 13 de noviembre de 2022, el precio se desplomó. Ojo a esa fecha: en 2025, octubre es pico.</p>
+                    <p>La paciencia será el único activo que generará rentabilidad este año. Quienes compren en la zona de los $50k en 2026 y esperen el lento despertar de 2027, serán los ganadores del ciclo de 2028.</p>
+                    
+                    <p>El gráfico no miente. Prepárense.</p>
+                `
+            }
+        ];
 
-                        <h2>5. El Desenlace y la Predicción (2026 - 2030)</h2>
-                        <p>Basándonos en la estructura de 2022-2023 y proyectando la simetría, aquí está lo que va a pasar. No es intuición, es matemática.</p>
+        const root = document.getElementById('blog-root');
 
-                        <div class="highlight-box">
-                            <h3>Predicción: El Invierno de 2026</h3>
-                            <p>Tenemos una fecha clave: <strong>Abril 2026</strong>. Así como junio de 2022 fue el mínimo, abril de 2026 lo será.</p>
-                            <ul>
-                                <li><strong>Feb 2026:</strong> Bitcoin cae a \$81k.</li>
-                                <li><strong>Abril 2026:</strong> Rebote de "gato muerto" hasta \$90k - \$91k.</li>
-                                <li><strong>Julio 2026:</strong> La gran depreciación. Tocamos fondo en <strong>\$64k</strong>.</li>
-                            </ul>
-                            <p>Después de julio de 2026, el mercado se mantiene bajo todo el año. Es silencio absoluto.</p>
-                        </div>
-
-                        <h3>El Largo Camino de Recuperación (2027 - 2028)</h3>
-                        <p>El 2027 es un año de acumulación lenta. Subirá "muy poco y lento", llegando a \$75k-\$80k a finales de año.</p>
-                        <p><strong>El momento de compra: Noviembre 2027.</strong> Si te quieres asegurar la rentabilidad del ciclo 2028-2029, es ahí donde debes comprar.</p>
-
-                        <div class="chart-container">
-                            <canvas id="chartFuturo"></canvas>
-                            <div class="chart-caption">Figura 3: Proyección a largo plazo. Nota el valle de 2026 y la acumulación de 2027.</div>
-                        </div>
-
-                        <blockquote>El ciclo no cambia, solo se amplifica. Noviembre 2021 = Marzo 2024 = Máximos. Junio 2022 = Abril 2026 = Mínimos.</blockquote>
-
-                        <p>Preparen sus carteras. 2025 fue la euforia, 2026 será el miedo, 2027 será recuperación lenta y 2028 la fortuna.</p>
-                    `,
-                    charts: [
-                        {
-                            id: "chartImpulso",
-                            type: "line",
-                            data: {
-                                labels: ['Inicio', 'Semana 3', 'Día 41 (Pico)'],
-                                datasets: [
-                                    {
-                                        label: '2021 (Feb-Mar)',
-                                        data: [35, 55, 61],
-                                        borderColor: '#555',
-                                        borderDash: [5, 5],
-                                        tension: 0.3
-                                    },
-                                    {
-                                        label: '2024 (Oct-Nov)',
-                                        data: [62, 85, 98],
-                                        borderColor: '#d4af37',
-                                        borderWidth: 3,
-                                        tension: 0.3
-                                    }
-                                ]
-                            },
-                            options: {
-                                responsive: true,
-                                plugins: { legend: { labels: { color: '#ccc' } } },
-                                scales: {
-                                    y: { grid: { color: '#222' }, ticks: { color: '#888' } },
-                                    x: { grid: { color: '#222' }, ticks: { color: '#888' } }
-                                }
-                            }
-                        },
-                        {
-                            id: "chartBajada",
-                            type: "line",
-                            data: {
-                                labels: ['Inicio', 'Día 7', 'Día 21', 'Día 49 (Fin)'],
-                                datasets: [
-                                    {
-                                        label: '2022 (May-Jul)',
-                                        data: [57, 46, 34, 31], // Datos aproximados basados en tu texto (57->34->31)
-                                        borderColor: '#666',
-                                        tension: 0.2
-                                    },
-                                    {
-                                        label: '2025 (Feb-Abr)',
-                                        data: [96, 86, 84, 82], // Datos basados en tu texto (96->86->82)
-                                        borderColor: '#d4af37',
-                                        borderWidth: 2,
-                                        tension: 0.2
-                                    }
-                                ]
-                            },
-                            options: {
-                                responsive: true,
-                                plugins: { legend: { labels: { color: '#ccc' } } },
-                                scales: {
-                                    y: { grid: { color: '#222' }, ticks: { color: '#888' } },
-                                    x: { grid: { color: '#222' }, ticks: { color: '#888' } }
-                                }
-                            }
-                        },
-                        {
-                            id: "chartFuturo",
-                            type: "bar", // Usamos barra para mostrar mejor la "acumulación"
-                            data: {
-                                labels: ['Nov 24', 'Abr 25', 'Oct 25 (Top)', 'Feb 26', 'Jul 26 (Bottom)', 'Nov 27 (Buy)', 'Late 2028'],
-                                datasets: [{
-                                    label: 'Precio BTC (k$)',
-                                    data: [98, 108, 122, 81, 64, 78, 140],
-                                    backgroundColor: function(context) {
-                                        const val = context.raw;
-                                        return val >= 90 ? '#d4af37' : '#222'; // Dorado para alto, oscuro para bajo
-                                    },
-                                    borderColor: '#d4af37',
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                plugins: { legend: { display: false } },
-                                scales: {
-                                    y: { grid: { color: '#222' }, ticks: { color: '#888' } },
-                                    x: { grid: { color: '#222' }, ticks: { color: '#888' } }
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        };
-
-        // --- Lógica de Renderizado ---
-        const app = document.getElementById('app');
-
-        function loadArticle(index) {
-            const article = BLOG_DATABASE.articles[index];
-            
+        function renderBlog() {
+            const post = BLOG_DATA[0]; 
             const html = `
                 <article>
-                    <div class="meta">
-                        <span class="meta-tag">${article.tags[0]}</span>
-                        <span>${article.date}</span>
-                        <span>•</span>
-                        <span>Por ${article.author}</span>
-                    </div>
-                    <h1>${article.title}</h1>
-                    ${article.contentHTML}
+                    <header class="article-header">
+                        <div class="article-meta">
+                            <span>${post.date}</span>
+                            <span>${post.readTime}</span>
+                        </div>
+                        <h1 class="article-title">${post.title}</h1>
+                    </header>
+                    <div class="article-content">${post.content}</div>
                 </article>
             `;
-            
-            app.innerHTML = html;
-
-            // Render Charts
-            if (article.charts) {
-                article.charts.forEach(chartConfig => {
-                    const ctx = document.getElementById(chartConfig.id);
-                    if (ctx) {
-                        new Chart(ctx, {
-                            type: chartConfig.type,
-                            data: chartConfig.data,
-                            options: chartConfig.options
-                        });
-                    }
-                });
-            }
+            root.innerHTML = html;
+            setTimeout(() => {
+                drawHistoryChart('historyChart');
+                drawFutureChart('futureChart');
+            }, 100);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadArticle(0);
-        });
+        // --- GRÁFICO 1: HISTORIA (2021-2024) ---
+        function drawHistoryChart(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const padding = { top: 60, right: 50, bottom: 60, left: 60 };
+            const chartW = width - padding.left - padding.right;
+            const chartH = height - padding.top - padding.bottom;
+
+            const maxVal = 120; 
+            const getX = (i) => padding.left + (i / 9) * chartW; // 10 puntos aprox
+            const getY = (v) => padding.top + chartH - (v / maxVal) * chartH;
+
+            ctx.clearRect(0, 0, width, height);
+
+            const data = [
+                {x:0, v:35, l:"Feb 21"}, {x:1, v:61, l:"Mar 21"}, {x:2, v:34, l:"May 21"}, {x:3, v:69, l:"Nov 21"},
+                {x:4, v:16, l:"Nov 22"}, {x:5, v:27, l:"Oct 23"}, {x:6, v:43, l:"Dic 23"}, {x:7, v:68, l:"Mar 24"},
+                {x:8, v:68, l:"Oct 24"}, {x:9, v:98, l:"Nov 24"}
+            ];
+
+            // Zona Letargo 2023
+            ctx.fillStyle = 'rgba(255,255,255,0.03)';
+            ctx.fillRect(getX(4), padding.top, (getX(6)-getX(4)), chartH);
+
+            // Línea
+            ctx.beginPath();
+            ctx.moveTo(getX(0), getY(data[0].v));
+            for(let i=1; i<data.length; i++) ctx.lineTo(getX(i), getY(data[i].v));
+            
+            ctx.strokeStyle = '#F7931A'; ctx.lineWidth=3; ctx.stroke();
+            
+            // Relleno
+            ctx.lineTo(getX(9), padding.top+chartH); ctx.lineTo(getX(0), padding.top+chartH);
+            ctx.fillStyle = 'rgba(247,147,26,0.1)'; ctx.fill();
+
+            // Puntos
+            data.forEach(d => {
+                ctx.beginPath(); ctx.arc(getX(d.x), getY(d.v), 4, 0, Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+                ctx.fillStyle='#888'; ctx.textAlign='center'; ctx.font='10px Inter';
+                ctx.fillText(d.l, getX(d.x), height-padding.bottom+20);
+                ctx.fillStyle='#fff'; ctx.fillText(`$${d.v}k`, getX(d.x), getY(d.v)-10);
+                if(d.v===16) { ctx.fillStyle='#ff6b6b'; ctx.fillText("FONDO", getX(d.x), getY(d.v)-22); }
+            });
+        }
+
+        // --- GRÁFICO 2: FUTURO (2025-2027) ---
+        function drawFutureChart(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const padding = { top: 60, right: 50, bottom: 60, left: 60 };
+            const chartW = width - padding.left - padding.right;
+            const chartH = height - padding.top - padding.bottom;
+
+            const maxVal = 140; 
+            const getX = (i) => padding.left + (i / 11) * chartW; // 12 puntos
+            const getY = (v) => padding.top + chartH - (v / maxVal) * chartH;
+
+            ctx.clearRect(0, 0, width, height);
+
+            const data = [
+                {x:0, v:108, l:"May 25"}, {x:1, v:117, l:"Jul 25"}, {x:2, v:122, l:"Oct 25", pico:true},
+                {x:3, v:111, l:"25 Oct"}, {x:4, v:84, l:"22 Nov"}, 
+                {x:5, v:95, l:"17 Ene"}, {x:6, v:83, l:"30 Ene", now:true},
+                {x:7, v:91, l:"Abr 26"}, {x:8, v:64, l:"Jul 26"}, {x:9, v:50, l:"Dic 26"},
+                {x:10, v:56, l:"Feb 27"}, {x:11, v:75, l:"Nov 27"}
+            ];
+
+            // Zona Letargo 2027
+            ctx.fillStyle = 'rgba(255,255,255,0.03)';
+            ctx.fillRect(getX(10), padding.top, (getX(11)-getX(10)), chartH);
+            ctx.fillStyle='#555'; ctx.font='bold 12px Inter'; ctx.textAlign='center';
+            ctx.fillText("LETHARGY 2027", (getX(10)+getX(11))/2, padding.top-20);
+
+            // Línea
+            ctx.beginPath();
+            ctx.moveTo(getX(0), getY(data[0].v));
+            for(let i=1; i<data.length; i++) ctx.lineTo(getX(i), getY(data[i].v));
+            
+            ctx.strokeStyle = '#F7931A'; ctx.lineWidth=3; ctx.stroke();
+            
+            // Relleno
+            ctx.lineTo(getX(11), padding.top+chartH); ctx.lineTo(getX(0), padding.top+chartH);
+            const grad = ctx.createLinearGradient(0, padding.top, 0, height);
+            grad.addColorStop(0, 'rgba(247,147,26,0.4)'); grad.addColorStop(1, 'rgba(247,147,26,0)');
+            ctx.fillStyle=grad; ctx.fill();
+
+            // Puntos
+            data.forEach(d => {
+                ctx.beginPath(); ctx.arc(getX(d.x), getY(d.v), 4, 0, Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+                ctx.fillStyle='#888'; ctx.textAlign='center'; ctx.font='10px Inter';
+                ctx.fillText(d.l, getX(d.x), height-padding.bottom+20);
+                ctx.fillStyle='#fff'; ctx.fillText(`$${d.v}k`, getX(d.x), getY(d.v)-10);
+                if(d.pico) { ctx.fillStyle='#F7931A'; ctx.font='bold 11px Inter'; ctx.fillText("PICO FINAL", getX(d.x), getY(d.v)-25); }
+                if(d.now) { ctx.fillStyle='#d32f2f'; ctx.font='bold 11px Inter'; ctx.fillText("AHORA", getX(d.x), getY(d.v)-22); }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderBlog);
+        window.addEventListener('resize', renderBlog);
     </script>
 </body>
 </html>
