@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bitcoin Cycle | Análisis Temporal</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #050505;
+            --card-bg: #0f0f0f;
+            --text-main: #e0e0e0;
+            --text-muted: #888888;
+            --accent: #d4af37; /* Oro */
+            --accent-glow: rgba(212, 175, 55, 0.2);
+            --border: #222;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 4rem;
+        }
+
+        .brand {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-main);
+            opacity: 0.8;
+        }
+
+        .brand span { color: var(--accent); }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem 5rem;
+        }
+
+        article { animation: fadeIn 1s ease-out; }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .meta-tag {
+            background: var(--accent);
+            color: #000;
+            padding: 2px 8px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        p { margin-bottom: 1.8rem; color: #ccc; }
+
+        h2 {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            margin-top: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            border-left: 3px solid var(--accent);
+            padding-left: 1rem;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        .highlight-box {
+            background: #111;
+            border: 1px solid #333;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        blockquote {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-style: italic;
+            border-left: 1px solid var(--border);
+            padding-left: 2rem;
+            margin: 3rem 0;
+            color: #fff;
+        }
+
+        strong { color: #fff; font-weight: 600; }
+
+        .chart-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            margin: 2.5rem 0;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .chart-caption {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 5rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">The <span>Voisi</span> Observer</div>
+    </header>
+
+    <main id="app"></main>
+
+    <footer>
+        <p>© 2026 Voisi Observer.</p>
+    </footer>
+
+    <script>
+        /**
+         * ==========================================
+         *  BASE DE DATOS DEL BLOG (JSON)
+         * ==========================================
+         */
+        const BLOG_DATABASE = {
+            articles: [
+                {
+                    id: 1,
+                    title: "El Fractal de los 45 Meses: La Guía Definitiva 2024-2030",
+                    date: "Jnauary 24, 2026",
+                    author: "El Observador, Adriana Alonso",
+                    tags: ["Bitcoin", "Análisis", "Ciclo"],
+                    contentHTML: `
+                        <p>Si no entiendes la historia, estás condenado a repetirla. Pero si entiendes los <strong>fractales temporales</strong>, puedes anticiparla. Hoy vamos a diseccionar la correlación exacta entre el ciclo de 2021 y el ciiclo de 2024, con una precisión de días y precios que no deja lugar a dudas.</p>
+                        
+                        <p>La premisa es simple pero poderosa: <strong>Febrero 2021 es Octubre 2024</strong>. Un desplazamiento de 45 meses. Vamos a recorrerlo paso a paso.</p>
+
+                        <h2>1. El Impulso Inicial (41 Días)</h2>
+                        <p>Todo comienza con una subida agresiva.</p>
+                        <ul>
+                            <li><strong>2021:</strong> Del 1 al 20 de febrero, oscilamos entre \$35k y \$55k, para romper el 13 de marzo hasta los <strong>\$61k</strong>. Duración: 41 días.</li>
+                            <li><strong>2024:</strong> Del 12 de octubre al 23 de noviembre, pasamos de \$62k a <strong>\$98k</strong>. Duración: 41 días.</li>
+                        </ul>
+
+                        <div class="chart-container">
+                            <canvas id="chartImpulso"></canvas>
+                            <div class="chart-caption">Figura 1: La subida inicial de 41 días. La geometría es idéntica.</div>
+                        </div>
+
+                        <h2>2. La Consolidación (Fase Calma)</h2>
+                        <p>Tras el pico, el mercado "se muerde la cola". No cae, simplemente se mantiene.</p>
+                        <ul>
+                            <li><strong>2021:</strong> Del 13 de marzo al 8 de mayo (26 días). Bajó solo \$3k (de \$61k a \$58k).</li>
+                            <li><strong>2024:</strong> Del 23 de noviembre al 22 de febrero de 2025 (29 días). Bajó solo \$2k (de \$98k a \$96k).</li>
+                        </ul>
+
+                        <h2>3. La Primera Bajada Importante (Ventana de 49 Días)</h2>
+                        <p>Aquí es donde el mercado pone nervioso a los débiles. Analicemos la estructura de la caída:</p>
+                        <ul>
+                            <li><strong>2022 (El Passado):</strong> Del 8 al 29 de mayo, cae de \$57k a \$34k (pierde \$23k en 21 días). Luego se arrastra hasta el 17 de julio hasta \$31k. <strong>Total: 49 días.</strong></li>
+                            <li><strong>2025 (El Futuro):</strong> Del 22 de febrero al 1 de marzo, cae de \$96k a \$86k. Luego, hasta el 12 de abril, llega a \$82k. <strong>Total: 49 días.</strong></li>
+                        </ul>
+                        
+                        <div class="chart-container">
+                            <canvas id="chartBajada"></canvas>
+                            <div class="chart-caption">Figura 2: La ventana de 49 días de corrección. Nota la diferencia en magnitud (\$23k vs \$10k).</div>
+                        </div>
+
+                        <h2>4. El Rebote de la Esperanza (La Trampa)</h2>
+                        <p>Esta es la fase donde creemos que el bear market terminó, pero no es así. Es una subida preparatoria.</p>
+                        <ul>
+                            <li><strong>2022:</strong> Del 17 de julio al 13 de noviembre, sube de \$31k a \$64k. La mayor parte de la subida fue de julio a agosto (+\$48k en 42 días).</li>
+                            <li><strong>2025:</strong> Del 12 de abril al 24 de mayo, sube de \$82k a \$108k. Luego, tras una pequeña corrección de mayo a agosto, la tercera subida nos lleva a <strong>\$122k el 4 de octubre</strong>.</li>
+                        </ul>
+
+                        <p>El 13 de noviembre de 2022, el precio se desplomó. Ojo a esa fecha: en 2025, octubre es pico.</p>
+
+                        <h2>5. El Desenlace y la Predicción (2026 - 2030)</h2>
+                        <p>Basándonos en la estructura de 2022-2023 y proyectando la simetría, aquí está lo que va a pasar. No es intuición, es matemática.</p>
+
+                        <div class="highlight-box">
+                            <h3>Predicción: El Invierno de 2026</h3>
+                            <p>Tenemos una fecha clave: <strong>Abril 2026</strong>. Así como junio de 2022 fue el mínimo, abril de 2026 lo será.</p>
+                            <ul>
+                                <li><strong>Feb 2026:</strong> Bitcoin cae a \$81k.</li>
+                                <li><strong>Abril 2026:</strong> Rebote de "gato muerto" hasta \$90k - \$91k.</li>
+                                <li><strong>Julio 2026:</strong> La gran depreciación. Tocamos fondo en <strong>\$64k</strong>.</li>
+                            </ul>
+                            <p>Después de julio de 2026, el mercado se mantiene bajo todo el año. Es silencio absoluto.</p>
+                        </div>
+
+                        <h3>El Largo Camino de Recuperación (2027 - 2028)</h3>
+                        <p>El 2027 es un año de acumulación lenta. Subirá "muy poco y lento", llegando a \$75k-\$80k a finales de año.</p>
+                        <p><strong>El momento de compra: Noviembre 2027.</strong> Si te quieres asegurar la rentabilidad del ciclo 2028-2029, es ahí donde debes comprar.</p>
+
+                        <div class="chart-container">
+                            <canvas id="chartFuturo"></canvas>
+                            <div class="chart-caption">Figura 3: Proyección a largo plazo. Nota el valle de 2026 y la acumulación de 2027.</div>
+                        </div>
+
+                        <blockquote>El ciclo no cambia, solo se amplifica. Noviembre 2021 = Marzo 2024 = Máximos. Junio 2022 = Abril 2026 = Mínimos.</blockquote>
+
+                        <p>Preparen sus carteras. 2025 fue la euforia, 2026 será el miedo, 2027 será recuperación lenta y 2028 la fortuna.</p>
+                    `,
+                    charts: [
+                        {
+                            id: "chartImpulso",
+                            type: "line",
+                            data: {
+                                labels: ['Inicio', 'Semana 3', 'Día 41 (Pico)'],
+                                datasets: [
+                                    {
+                                        label: '2021 (Feb-Mar)',
+                                        data: [35, 55, 61],
+                                        borderColor: '#555',
+                                        borderDash: [5, 5],
+                                        tension: 0.3
+                                    },
+                                    {
+                                        label: '2024 (Oct-Nov)',
+                                        data: [62, 85, 98],
+                                        borderColor: '#d4af37',
+                                        borderWidth: 3,
+                                        tension: 0.3
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: { legend: { labels: { color: '#ccc' } } },
+                                scales: {
+                                    y: { grid: { color: '#222' }, ticks: { color: '#888' } },
+                                    x: { grid: { color: '#222' }, ticks: { color: '#888' } }
+                                }
+                            }
+                        },
+                        {
+                            id: "chartBajada",
+                            type: "line",
+                            data: {
+                                labels: ['Inicio', 'Día 7', 'Día 21', 'Día 49 (Fin)'],
+                                datasets: [
+                                    {
+                                        label: '2022 (May-Jul)',
+                                        data: [57, 46, 34, 31], // Datos aproximados basados en tu texto (57->34->31)
+                                        borderColor: '#666',
+                                        tension: 0.2
+                                    },
+                                    {
+                                        label: '2025 (Feb-Abr)',
+                                        data: [96, 86, 84, 82], // Datos basados en tu texto (96->86->82)
+                                        borderColor: '#d4af37',
+                                        borderWidth: 2,
+                                        tension: 0.2
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: { legend: { labels: { color: '#ccc' } } },
+                                scales: {
+                                    y: { grid: { color: '#222' }, ticks: { color: '#888' } },
+                                    x: { grid: { color: '#222' }, ticks: { color: '#888' } }
+                                }
+                            }
+                        },
+                        {
+                            id: "chartFuturo",
+                            type: "bar", // Usamos barra para mostrar mejor la "acumulación"
+                            data: {
+                                labels: ['Nov 24', 'Abr 25', 'Oct 25 (Top)', 'Feb 26', 'Jul 26 (Bottom)', 'Nov 27 (Buy)', 'Late 2028'],
+                                datasets: [{
+                                    label: 'Precio BTC (k$)',
+                                    data: [98, 108, 122, 81, 64, 78, 140],
+                                    backgroundColor: function(context) {
+                                        const val = context.raw;
+                                        return val >= 90 ? '#d4af37' : '#222'; // Dorado para alto, oscuro para bajo
+                                    },
+                                    borderColor: '#d4af37',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: { legend: { display: false } },
+                                scales: {
+                                    y: { grid: { color: '#222' }, ticks: { color: '#888' } },
+                                    x: { grid: { color: '#222' }, ticks: { color: '#888' } }
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // --- Lógica de Renderizado ---
+        const app = document.getElementById('app');
+
+        function loadArticle(index) {
+            const article = BLOG_DATABASE.articles[index];
+            
+            const html = `
+                <article>
+                    <div class="meta">
+                        <span class="meta-tag">${article.tags[0]}</span>
+                        <span>${article.date}</span>
+                        <span>•</span>
+                        <span>Por ${article.author}</span>
+                    </div>
+                    <h1>${article.title}</h1>
+                    ${article.contentHTML}
+                </article>
+            `;
+            
+            app.innerHTML = html;
+
+            // Render Charts
+            if (article.charts) {
+                article.charts.forEach(chartConfig => {
+                    const ctx = document.getElementById(chartConfig.id);
+                    if (ctx) {
+                        new Chart(ctx, {
+                            type: chartConfig.type,
+                            data: chartConfig.data,
+                            options: chartConfig.options
+                        });
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadArticle(0);
+        });
+    </script>
+</body>
+</html>
